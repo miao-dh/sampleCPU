@@ -4,8 +4,8 @@ module IF(
     input wire rst,
     input wire [`StallBus-1:0] stall,
 
-    // input wire flush,
-    // input wire [31:0] new_pc,
+    input wire flush,
+    input wire [31:0] new_pc,
 
     input wire [`BR_WD-1:0] br_bus,
 
@@ -41,14 +41,18 @@ module IF(
         if (rst) begin
             ce_reg <= 1'b0;
         end
+        else if (br_e) begin//使发生分支时也能更新，确保能够继续读取指令
+            ce_reg <= 1'b1;
+        end
         else if (stall[0]==`NoStop) begin
             ce_reg <= 1'b1;
         end
     end
 
 
-    assign next_pc = br_e ? br_addr 
-                   : pc_reg + 32'h4;
+    assign next_pc = //flush ? new_pc :
+                     br_e ? br_addr :
+                     pc_reg + 32'h4;
 
     
     assign inst_sram_en = ce_reg;
