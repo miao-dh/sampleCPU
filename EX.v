@@ -67,7 +67,7 @@ module EX(
         rf_rdata2       // 31:0
     } = id_to_ex_bus_r;
 
-    wire [31:0] imm_sign_extend, imm_zero_extend, sa_zero_extend;移位量零扩展 
+    wire [31:0] imm_sign_extend, imm_zero_extend, sa_zero_extend;
     assign imm_sign_extend = {{16{inst[15]}},inst[15:0]};//立即数符号扩展
     assign imm_zero_extend = {16'b0, inst[15:0]};//立即数零扩展
     assign sa_zero_extend = {27'b0,inst[10:6]};//移位量零扩展 
